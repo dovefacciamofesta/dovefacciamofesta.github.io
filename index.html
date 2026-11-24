@@ -35,9 +35,10 @@ html,body{margin:0;height:100%;background:#FFFBF4;overflow:hidden;font-family:Nu
 #no{background:transparent;color:#bbb;padding:6px!important;font-size:20px!important}
 </style></head><body>
 <div id="splash"><img class="ico" src="/icon-512.png" alt=""><h1>DoveFacciamo<span>Festa</span></h1><p>Trova la sala per la tua festa</p></div>
-<iframe id="app" src="https://script.google.com/macros/s/AKfycbxrsNihzvoDlmQBks8nKTf6HcayAcY1H4tNLJGg5MM5te8JJZy7gzOGzGnxMFEihwW6/exec" title="DoveFacciamoFesta" allow="geolocation; clipboard-write"></iframe>
-<div id="inst"><img src="/icon-192.png" alt=""><div class="t" id="txt"><b>Installa l'app</b><br>Ritrovi subito la tua richiesta.</div><button id="ok">Installa</button><button id="no" aria-label="Chiudi">✕</button></div>
+<iframe id="app" title="DoveFacciamoFesta" allow="geolocation; clipboard-write"></iframe>
+<div id="inst"><img src="/icon-192.png" alt=""><div class="t" id="txt"><b>Installa l'app</b><br>Tienila sul telefono, sempre a portata di mano.</div><button id="ok">Installa</button><button id="no" aria-label="Chiudi">✕</button></div>
 <script>
+var EXEC='https://script.google.com/macros/s/AKfycbxrsNihzvoDlmQBks8nKTf6HcayAcY1H4tNLJGg5MM5te8JJZy7gzOGzGnxMFEihwW6/exec';document.getElementById('app').src=EXEC+location.search;
 var t0=Date.now(),splash=document.getElementById('splash');
 function chiudi(){var w=Math.max(0,1600-(Date.now()-t0));setTimeout(function(){splash.classList.add('via')},w)}
 document.getElementById('app').addEventListener('load',chiudi);setTimeout(chiudi,6000);
