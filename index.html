@@ -33,15 +33,34 @@ html,body{margin:0;height:100%;background:#FFFBF4;overflow:hidden;font-family:Nu
 #inst button{border:0;border-radius:12px;font:700 15px Nunito,sans-serif;padding:10px 14px;cursor:pointer}
 #ok{background:#F2613F;color:#fff}
 #no{background:transparent;color:#bbb;padding:6px!important;font-size:20px!important}
+#scegli{position:fixed;inset:0;background:#FFFBF4;z-index:15;display:none;overflow:auto;padding:28px 18px}
+#scegli .box{max-width:520px;margin:0 auto}
+#scegli h2{font-family:Fredoka,sans-serif;color:#2A2233;font-size:26px;margin:10px 0 4px}
+#scegli p{color:#7A6E86;margin:0 0 16px}
+#scegli a.req{display:block;background:#fff;border-radius:16px;padding:14px 16px;margin:10px 0;box-shadow:0 4px 0 #EDE3D3;color:#2A2233;text-decoration:none;font-weight:700;font-size:17px}
+#scegli a.req small{display:block;color:#1E8C86;font-weight:700;font-size:13px;margin-top:2px}
+#scegli a.nuova{display:block;text-align:center;background:#F2613F;color:#fff;border-radius:16px;padding:14px;margin-top:18px;font-family:Fredoka,sans-serif;font-size:18px;text-decoration:none;box-shadow:0 4px 0 #C9431F}
+#scegli .logo{display:flex;align-items:center;gap:10px;font-family:Fredoka,sans-serif;font-size:22px;color:#2A2233;font-weight:700}
+#scegli .logo img{width:44px;height:44px;border-radius:11px}
+#scegli .logo span{color:#F2613F}
 </style></head><body>
 <div id="splash"><img class="ico" src="/icon-512.png" alt=""><h1>DoveFacciamo<span>Festa</span></h1><p>Trova la sala per la tua festa</p></div>
+<div id="scegli"><div class="box"><div class="logo"><img src="/icon-192.png" alt="">DoveFacciamo<span>Festa</span></div><h2>Le tue richieste</h2><p>Tocca una richiesta per vedere quali sale hanno risposto.</p><div id="elenco"></div><a class="nuova" href="/?nuova=1">+ Nuova richiesta</a></div></div>
 <iframe id="app" title="DoveFacciamoFesta" allow="geolocation; clipboard-write"></iframe>
-<div id="inst"><img src="/icon-192.png" alt=""><div class="t" id="txt"><b>Installa l'app</b><br>Tienila sul telefono, sempre a portata di mano.</div><button id="ok">Installa</button><button id="no" aria-label="Chiudi">✕</button></div>
+<div id="inst"><img src="/icon-192.png" alt=""><div class="t" id="txt"><b>Installa l'app</b><br>Ritrovi le tue richieste con un tocco.</div><button id="ok">Installa</button><button id="no" aria-label="Chiudi">✕</button></div>
 <script>
-var EXEC='https://script.google.com/macros/s/AKfycbxrsNihzvoDlmQBks8nKTf6HcayAcY1H4tNLJGg5MM5te8JJZy7gzOGzGnxMFEihwW6/exec';document.getElementById('app').src=EXEC+location.search;
+var EXEC='https://script.google.com/macros/s/AKfycbxrsNihzvoDlmQBks8nKTf6HcayAcY1H4tNLJGg5MM5te8JJZy7gzOGzGnxMFEihwW6/exec';var app=document.getElementById('app'),Q=new URLSearchParams(location.search);
+function leggi(){try{var a=JSON.parse(localStorage.getItem('dff_req')||'[]'),oggi=new Date().toISOString().slice(0,10);return a.filter(function(x){return x&&x.r&&(!x.scade||x.scade>=oggi)})}catch(e){return []}}
+function salva(a){try{localStorage.setItem('dff_req',JSON.stringify(a))}catch(e){}}
+salva(leggi());
+addEventListener('message',function(e){var d=e.data;if(!d||d.dff!=='richiesta'||!d.r)return;var a=leggi().filter(function(x){return x.r!==d.r});a.unshift({r:String(d.r),titolo:String(d.titolo||'La tua festa'),scade:String(d.scade||'')});salva(a.slice(0,10))});
+var lista=leggi();
+if(Q.get('r')){app.src=EXEC+'?r='+encodeURIComponent(Q.get('r'))}
+else if(Q.get('nuova')||!lista.length){app.src=EXEC}
+else{var el=document.getElementById('elenco');lista.forEach(function(x){var a=document.createElement('a');a.className='req';a.href='/?r='+encodeURIComponent(x.r);a.textContent=x.titolo;var s=document.createElement('small');s.textContent='Vedi le risposte delle sale';a.appendChild(s);el.appendChild(a)});document.getElementById('scegli').style.display='block';app.style.display='none'}
 var t0=Date.now(),splash=document.getElementById('splash');
 function chiudi(){var w=Math.max(0,1600-(Date.now()-t0));setTimeout(function(){splash.classList.add('via')},w)}
-document.getElementById('app').addEventListener('load',chiudi);setTimeout(chiudi,6000);
+app.addEventListener('load',chiudi);setTimeout(chiudi,app.src?6000:1800);
 if('serviceWorker' in navigator)navigator.serviceWorker.register('/sw.js').catch(function(){});
 var standalone=matchMedia('(display-mode: standalone)').matches||navigator.standalone;
 var box=document.getElementById('inst'),ok=document.getElementById('ok'),ev=null;
