@@ -72,4 +72,7 @@ addEventListener('appinstalled',function(){box.style.display='none'});
 var ios=/iphone|ipad|ipod/i.test(navigator.userAgent);
 if(!ios&&!standalone&&!nascosto())setTimeout(function(){if(ev)return;var inapp=/; wv\)|FBAN|FBAV|Instagram|GSA\//i.test(navigator.userAgent);document.getElementById('txt').innerHTML=inapp?'<b>Installa l\'app</b><br>Tocca <b>&#8942;</b> in alto e scegli <b>Apri in Chrome</b>, poi <b>Installa</b>':'<b>Installa l\'app</b><br>Tocca <b>&#8942;</b> in alto a destra e poi <b>Installa app</b> (o <b>Aggiungi a schermata Home</b>)';ok.style.display='none';box.style.display='flex'},4500);
 if(ios&&!standalone&&!nascosto()){document.getElementById('txt').innerHTML='<b>Installa l\'app</b><br>Tocca <b>Condividi</b> <svg width="14" height="16" viewBox="0 0 14 16" style="vertical-align:-2px"><path d="M7 1v9M3.5 4.5 7 1l3.5 3.5M2 7v8h10V7" stroke="#fff" stroke-width="1.6" fill="none"/></svg> e poi <b>Aggiungi a Home</b>';ok.style.display='none';setTimeout(function(){box.style.display='flex'},3000)}
-</script></body></html>
+</script>
+<script>window.goatcounter={path:function(){var q=new URLSearchParams(location.search);return q.get('r')?'/pagina-famiglia':(q.get('nuova')?'/nuova-richiesta':'/')}}</script>
+<script data-goatcounter="https://dovefacciamofesta.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body></html>
